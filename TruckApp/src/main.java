@@ -1,11 +1,12 @@
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
 import javax.swing.JFrame;
 import javax.swing.JButton;
-import Transport.FuelTruck;
-import myEnum.Direction;
+import Transport.*;
+import myEnum.*;
 //
 public class main {
 	private JFrame frame;
@@ -15,7 +16,9 @@ public class main {
 	JButton btnLeft;
 	JButton btnRight;
 	JButton btnCreateFuelTruck;
-	FuelTruck fuelTruck ;
+	JButton btnCreateTruck;
+	ITransport transport;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -55,15 +58,8 @@ public class main {
 		btnCreateFuelTruck = new JButton("Create fuel truck");
 		btnCreateFuelTruck.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				fuelTruck = new FuelTruck();
-				Random random = new Random();
-				fuelTruck.setPosition(
-						random.nextInt(100), 
-						random.nextInt(100),
-						panel.getWidth(), 
-						panel.getHeight()
-						);
-				panel.setFuelTruck(fuelTruck);
+				newFuelTruck();
+				panel.setTransport(transport);
 				panel.repaint();   
 			}
 		});
@@ -73,8 +69,8 @@ public class main {
 		btnLeft = new JButton("");
 		btnLeft.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				fuelTruck.moveTruck(Direction.Left);
-				panel.setFuelTruck(fuelTruck);
+				transport.MoveTransport(Direction.Left);
+				panel.setTransport(transport);
 				panel.repaint();
 			}
 		});
@@ -84,8 +80,8 @@ public class main {
 		btnDown = new JButton("");
 		btnDown.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				fuelTruck.moveTruck(Direction.Down);
-				panel.setFuelTruck(fuelTruck);
+				transport.MoveTransport(Direction.Down);
+				panel.setTransport(transport);
 				panel.repaint();
 			}
 		});
@@ -95,8 +91,8 @@ public class main {
 		btnRight = new JButton("");
 		btnRight.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				fuelTruck.moveTruck(Direction.Right);
-				panel.setFuelTruck(fuelTruck);
+				transport.MoveTransport(Direction.Right);
+				panel.setTransport(transport);
 				panel.repaint();
 			}
 		});
@@ -106,12 +102,65 @@ public class main {
 		btnUp = new JButton("");
 		btnUp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				fuelTruck.moveTruck(Direction.Up);
-				panel.setFuelTruck(fuelTruck);
+				transport.MoveTransport(Direction.Up);
+				panel.setTransport(transport);
 				panel.repaint();
 			}
 		});
 		btnUp.setBounds(804, 379, 30, 30);
 		frame.getContentPane().add(btnUp);
+		//
+		btnCreateTruck = new JButton("Create truck");
+		btnCreateTruck.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				newTruck();			
+				panel.setTransport(transport);
+				panel.repaint();
+			}
+		});
+		btnCreateTruck.setBounds(147, 11, 135, 23);
+		frame.getContentPane().add(btnCreateTruck);
+	}
+	//
+	protected void newFuelTruck() {
+		Random rnd = new Random();
+		countWheels countWheels = null;
+		switch(rnd.nextInt(4)) {
+		case 3:
+			countWheels=countWheels.superIncreasedCarryngCapacity;
+			break;
+		case 2:
+			countWheels=countWheels.increasedCarryngCapacity;
+			break;
+		case 1:
+			countWheels=countWheels.basic;
+			break;
+		default:
+			countWheels=countWheels.basic;
+			break;
+		}
+        transport = new FuelTruck(100, countWheels, 1000,"FUEL",10, false, Color.orange, Color.gray, Color.black, Color.red);
+        transport.SetPosition(rnd.nextInt(90)+10, rnd.nextInt(90)+10, panel.getWidth(), panel.getHeight());	
+	}
+	//
+	protected void newTruck() {
+		Random rnd = new Random();
+		countWheels countWheels = null;
+		switch(rnd.nextInt(4)) {
+		case 3:
+			countWheels=countWheels.superIncreasedCarryngCapacity;
+			break;
+		case 2:
+			countWheels=countWheels.increasedCarryngCapacity;
+			break;
+		case 1:
+			countWheels=countWheels.basic;
+			break;
+		default:
+			countWheels=countWheels.basic;
+			break;
+		}
+        transport = new Truck(100,countWheels,1000,true,Color.white,Color.white,Color.black);
+        transport.SetPosition(rnd.nextInt(90)+10, rnd.nextInt(90)+10, panel.getWidth(), panel.getHeight());	
 	}
 }

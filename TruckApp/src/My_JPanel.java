@@ -3,16 +3,16 @@ import javax.swing.JPanel;
 import Transport.*;
 //
 public class My_JPanel extends JPanel {
-	FuelTruck fuelTruck;
+	ITransport transport;
 	//
-	public void setFuelTruck(FuelTruck fuelTruck) {
-		this.fuelTruck=fuelTruck;
+	public void setTransport(ITransport transport) {
+		this.transport = transport;
 	}
 	//
 	public void paint(Graphics g) {
 		super.paint(g);
-		if (fuelTruck!=null) {
-			fuelTruck.drawTruck(g);
+		if (transport!=null) {
+			transport.DrawTransport(g);
 		}
 		repaint();	
 	}
