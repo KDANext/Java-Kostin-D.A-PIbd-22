@@ -22,7 +22,6 @@ public class basicTruckWheel implements IWheel {
 		{
 		case superIncreasedCarryngCapacity:
 			g.setColor(Color.black);
-			//g.fillRect(startX + 58, startY + 8, 6, 16);
 			drawWheel(g, startX + 40, startY + 30);
 		case increasedCarryngCapacity:
 			drawWheel(g, startX + 20, startY + 30);
