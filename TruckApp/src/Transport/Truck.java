@@ -10,7 +10,6 @@ public class Truck extends Vehicle {
 	protected final int truckWidth = 90;
     protected final int truckHeight = 50;
     public boolean flasher;
-    private int typeWheel;
 	//	
     public Truck(int maxSpeed,
                     countWheels countWheels,
@@ -27,8 +26,6 @@ public class Truck extends Vehicle {
         this.bodyColor = bodyColor;
         this.drivesColor = drivesColor;
         this.frameColor = frameColor;
-        Random rnd =new Random();
-        typeWheel=rnd.nextInt()%3;
     }
 	//	
     @Override
@@ -48,17 +45,7 @@ public class Truck extends Vehicle {
 		g.fillRect(startX + 0, startY + 30, 63-0, 43 - 30);
 		g.fillRect(startX + 7, startY + 28, 52 - 7, 3);
 		//	
-		switch (typeWheel) {
-		case 1:
-			new superTruckWheel(countWheels, drivesColor).draw(g, startX, startY);
-			break;
-		case 2:
-			new goodTruckWheel(countWheels, drivesColor).draw(g, startX, startY);
-			break;
-		default:
-			new basicTruckWheel(countWheels, drivesColor).draw(g, startX, startY);
-			break;
-		}
+		typeWheel.draw(g, startX, startY);		
 		//	
 		g.setColor(Color.yellow);
 		g.fillRect(startX + 83, startY + 33, 85 - 83, 39 - 33);
@@ -102,4 +89,26 @@ public class Truck extends Vehicle {
 			break;
 		}
     }
+    @Override
+    public boolean equals(Object transport) {
+    	if(transport==null) return false;
+    	Truck truck = (Truck) transport;
+    	if(truck.flasher!=flasher) return false;
+    	if(truck.countWheels!=countWheels) return false;
+    	if(truck.drivesColor!=drivesColor) return false;
+    	if(truck.frameColor!=frameColor) return false;
+    	if(truck.maxSpeed!=maxSpeed) return false;
+    	if(truck.weight!=weight) return false;
+    	return true;
+    }
+    @Override
+    public boolean notEquals(Object transport) {
+		return !equals(transport);
+	}
+	public IWheel getTypeWheel() {
+		return typeWheel;
+	}
+	public void setTypeWheel(IWheel typeWheel) {
+		this.typeWheel = typeWheel;
+	}
 }

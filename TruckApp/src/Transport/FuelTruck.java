@@ -2,10 +2,12 @@ package Transport;
 //	
 import java.awt.*;
 import myEnum.*;
+import wheel.IWheel;
+import wheel.superTruckWheel;
 //	
 public class FuelTruck extends Truck
 {
-	public String typeLiqui;
+	public String typeLiquid;
 	public float countLiquid;
 	public Color tankColor;
 	//	
@@ -28,7 +30,7 @@ public class FuelTruck extends Truck
 				drivesColor,
 				frameColor);
 		this.tankColor = tankColor;
-		this.typeLiqui = typeLiquid;
+		this.typeLiquid = typeLiquid;
 		this.countLiquid = countLiquid;
 	}
 	//		
@@ -42,5 +44,24 @@ public class FuelTruck extends Truck
 		g.fillRect(startX + 17, startY + 1, 27 - 17, 3 - 1);
 		g.fillRect(startX + 36, startY + 1, 27 - 17, 3 - 1);
 		super.DrawTransport(g);
+	}
+	@Override
+	public boolean equals(Object transport) {
+		FuelTruck fuelTruck = (FuelTruck) transport;
+		if(typeLiquid!=fuelTruck.typeLiquid) return false;
+		if(tankColor!=fuelTruck.tankColor) return false;
+		if(super.notEquals(fuelTruck)) return false;
+		return true;
+	}
+	@Override
+	public boolean notEquals(Object transport) {
+		return !equals(transport);
+	}
+	public boolean notEquals(Truck truck) {
+		if (!equals(truck)) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
