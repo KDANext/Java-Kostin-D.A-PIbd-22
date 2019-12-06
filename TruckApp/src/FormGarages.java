@@ -3,6 +3,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JLabel;
@@ -16,13 +17,20 @@ import wheel.IWheel;
 import java.awt.event.ActionListener;
 import java.util.Random;
 import java.awt.event.ActionEvent;
+import javax.swing.JList;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.ListSelectionEvent;
 
 public class FormGarages {
 
 	private JFrame frame;
 	private JTextField tbTruckNumber;
-	garages<ITransport, IWheel> garaging;
-	panelGaraging pbGarages;
+	private JList listLevels;
+	private panelGaraging pbGarages;
+	private multiLevelGarages garages;	
+	private final int countLevel = 5;
+	private int selectLevel = 0;
+	historyTransport historyTransport = new historyTransport();
 	/**
 	 * Launch the application.
 	 */
@@ -50,7 +58,6 @@ public class FormGarages {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {				
-
 		frame = new JFrame();
 		frame.setBounds(100, 100, 900, 500);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -82,18 +89,16 @@ public class FormGarages {
 		JButton btnTakeTransport = new JButton("Take");
 		btnTakeTransport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(selectLevel>-1)
 				if(tbTruckNumber.getText() !="") {
-					ITransport transport = garaging.takeTransport(Integer.parseInt(tbTruckNumber.getText()));
+					ITransport transport = garages.getGaragesStages(selectLevel).takeTransport(Integer.parseInt(tbTruckNumber.getText()));
 					if(transport!=null) {
 						transport.SetPosition(5, 5, pbPickUpTruck.getWidth(), pbPickUpTruck.getHeight());
 						pbPickUpTruck.setTransport(transport);
-						pbPickUpTruck.repaint();
+						historyTransport.addHistory(transport);
+						pbGarages.setHistoryTransport(historyTransport);
+						Draw();
 					}
-					for (int i = 0; i < garaging.getSize(); i++) {
-						if(transport.equals(garaging.checkTransportAtIndex(i)))
-						System.out.println(i);
-					}
-					System.out.println();
 				}
 			}
 		});
@@ -122,7 +127,8 @@ public class FormGarages {
 				Color mainColor = JColorChooser.showDialog(pbGarages, "chose", Color.BLACK);
 				ITransport transport = new Truck(100,countWheels,100,rnd.nextBoolean(),mainColor,Color.white,Color.BLACK);						
 				IWheel wheel= new wheel.basicTruckWheel(countWheels, Color.white);
-				garaging.addTransport(transport, wheel);
+				int a = garages.getGaragesStages(selectLevel).addTransport(transport, wheel);
+				Draw();
 			}
 		});
 		btnAddTruck.setBounds(768, 136, 110, 36);
@@ -151,19 +157,34 @@ public class FormGarages {
 				Color drivesColor = JColorChooser.showDialog(pbGarages, "chose", Color.BLACK);
 				ITransport transport = new FuelTruck(100,countWheels,100,"FUEL",10,rnd.nextBoolean(),mainColor,drivesColor,Color.BLACK,Color.red);						
 				IWheel wheel= new wheel.basicTruckWheel(countWheels, drivesColor);
-				garaging.addTransport(transport, wheel);
+				garages.getGaragesStages(selectLevel).addTransport(transport, wheel);
+				Draw();
 			}
 		});
 		btnAddFuelTruck.setBounds(768, 178, 110, 40);
 		frame.getContentPane().add(btnAddFuelTruck);
 
-		garaging = new garages<ITransport, IWheel>(20, pbGarages.getWidth(), pbGarages.getHeight());
+		DefaultListModel listLevelModel = new DefaultListModel();
+		for (int i = 0; i < countLevel; i++) {
+			listLevelModel.addElement("Уровень "+(i+1));
+		}
+		JList listLevels = new JList(listLevelModel);
+		listLevels.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				selectLevel=listLevels.getSelectedIndex();
+				Draw();
+			}
+		});
+		listLevels.setBounds(768, 1, 110, 121);
+		frame.getContentPane().add(listLevels);
+		garages = new multiLevelGarages(countLevel, pbGarages.getWidth(), pbGarages.getHeight());
 		Draw();
-
+		
+		garages.getTruck(0, 0);
 	}
 
 	private void Draw() {
-		pbGarages.setGarages(garaging);
+		pbGarages.setGarages(garages.getGaragesStages(selectLevel));
 		pbGarages.repaint();	
 	}
 }
