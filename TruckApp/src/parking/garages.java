@@ -61,7 +61,6 @@ public class garages<T extends Object&ITransport,W extends Object&IWheel >  {
 			}
 		}
 
-
 	}
 	private void drawMarking(Graphics g) {
 		g.drawRect(0, 0, (_maxCount/5)*_placeSizeWidth,480);
