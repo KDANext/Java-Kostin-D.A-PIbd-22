@@ -30,6 +30,7 @@ public class FormGarages {
 	private multiLevelGarages garages;	
 	private final int countLevel = 5;
 	private int selectLevel = 0;
+	historyTransport historyTransport = new historyTransport();
 	/**
 	 * Launch the application.
 	 */
@@ -57,7 +58,6 @@ public class FormGarages {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {				
-
 		frame = new JFrame();
 		frame.setBounds(100, 100, 900, 500);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -95,13 +95,10 @@ public class FormGarages {
 					if(transport!=null) {
 						transport.SetPosition(5, 5, pbPickUpTruck.getWidth(), pbPickUpTruck.getHeight());
 						pbPickUpTruck.setTransport(transport);
-						pbPickUpTruck.repaint();
+						historyTransport.addHistory(transport);
+						pbGarages.setHistoryTransport(historyTransport);
+						Draw();
 					}
-					for (int i = 0; i < garages.getGaragesStages(selectLevel).getSize(); i++) {
-						if(transport.equals(garages.getGaragesStages(selectLevel).getTransportAtIndex(i)))
-							System.out.println(i);
-					}
-					System.out.println();
 				}
 			}
 		});
@@ -182,10 +179,11 @@ public class FormGarages {
 		frame.getContentPane().add(listLevels);
 		garages = new multiLevelGarages(countLevel, pbGarages.getWidth(), pbGarages.getHeight());
 		Draw();
+		
+		garages.getTruck(0, 0);
 	}
 
 	private void Draw() {
-		
 		pbGarages.setGarages(garages.getGaragesStages(selectLevel));
 		pbGarages.repaint();	
 	}

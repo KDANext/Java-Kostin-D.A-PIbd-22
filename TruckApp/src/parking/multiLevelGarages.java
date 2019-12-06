@@ -16,11 +16,15 @@ public class multiLevelGarages {
 			garagesStages.add(new garages<ITransport, IWheel>(countPlaces, pictureWidth, pictureHeight));
 		}
 	}
-	//Подобие индексатора
 	public garages<ITransport,IWheel> getGaragesStages(int index){	
 		if(index>-1 && index < garagesStages.size()) {
 			return garagesStages.get(index);
 		}
 		return null;
+	}
+	public ITransport getTruck(int level,int index) {
+		if(level<0 || level>=garagesStages.size()) return null;
+		if(index<0 || index>countPlaces) return null;
+		return getGaragesStages(level).getTransportAtIndex(index);
 	}
 }
