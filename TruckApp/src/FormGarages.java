@@ -174,7 +174,7 @@ public class FormGarages {
 
 		DefaultListModel listLevelModel = new DefaultListModel();
 		for (int i = 0; i < countLevel; i++) {
-			listLevelModel.addElement("Óðîâåíü "+(i+1));
+			listLevelModel.addElement("Ã“Ã°Ã®Ã¢Ã¥Ã­Ã¼ "+(i+1));
 		}
 		JList listLevels = new JList(listLevelModel);
 		listLevels.addListSelectionListener(new ListSelectionListener() {
@@ -191,6 +191,7 @@ public class FormGarages {
 			public void actionPerformed(ActionEvent e) {
 				FormConfigTruck conf = new FormConfigTruck(new _delegate());
 				conf.frame.setVisible(true);
+				Draw();
 			}
 		});
 		btnAddTransport.setBounds(768, 229, 110, 40);
