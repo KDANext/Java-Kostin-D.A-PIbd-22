@@ -49,4 +49,7 @@ public abstract class Vehicle implements ITransport {
 	public void setTypeWheel(IWheel typeWheel) {
 		this.typeWheel = typeWheel;
 	}
+	public void SetMainColor(Color color){
+        bodyColor = color;
+    }
 }

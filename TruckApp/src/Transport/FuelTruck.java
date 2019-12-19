@@ -64,4 +64,7 @@ public class FuelTruck extends Truck
 			return false;
 		}
 	}
+	public void setTankColor(Color tankColor) {
+		this.tankColor = tankColor;
+	}
 }

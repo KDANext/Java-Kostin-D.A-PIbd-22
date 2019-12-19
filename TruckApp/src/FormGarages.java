@@ -11,6 +11,8 @@ import javax.swing.JTextField;
 import Transport.FuelTruck;
 import Transport.ITransport;
 import Transport.Truck;
+import Transport.Vehicle;
+import delegate.TransportDelegate;
 import myEnum.countWheels;
 import parking.*;
 import wheel.IWheel;
@@ -22,7 +24,13 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 
 public class FormGarages {
-
+	class _delegate extends TransportDelegate {
+		@Override
+		public void invoke(ITransport transport) {
+			garages.getGaragesStages(selectLevel).addTransport(transport,((Vehicle)transport).getTypeWheel());
+			pbGarages.repaint();
+		}
+	}
 	private JFrame frame;
 	private JTextField tbTruckNumber;
 	private JList listLevels;
@@ -57,7 +65,7 @@ public class FormGarages {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {				
+	private void initialize() {	
 		frame = new JFrame();
 		frame.setBounds(100, 100, 900, 500);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -177,6 +185,16 @@ public class FormGarages {
 		});
 		listLevels.setBounds(768, 1, 110, 121);
 		frame.getContentPane().add(listLevels);
+		
+		JButton btnAddTransport = new JButton("Add transport");
+		btnAddTransport.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				FormConfigTruck conf = new FormConfigTruck(new _delegate());
+				conf.frame.setVisible(true);
+			}
+		});
+		btnAddTransport.setBounds(768, 229, 110, 40);
+		frame.getContentPane().add(btnAddTransport);
 		garages = new multiLevelGarages(countLevel, pbGarages.getWidth(), pbGarages.getHeight());
 		Draw();
 		

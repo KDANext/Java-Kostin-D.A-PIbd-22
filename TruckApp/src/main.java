@@ -7,6 +7,9 @@ import javax.swing.JFrame;
 import javax.swing.JButton;
 import Transport.*;
 import myEnum.*;
+import wheel.basicTruckWheel;
+import wheel.goodTruckWheel;
+import wheel.superTruckWheel;
 //
 public class main {
 	private JFrame frame;
