@@ -77,4 +77,9 @@ public class garages<T extends Object&ITransport,W extends Object&IWheel >  {
 	public int getSize() {
 		return _places.size();
 	}
+	public void setTransport(int index, T transport) {
+		_places.put(index, transport);
+		_wheels.put(index, (W) transport.getTypeWheel());
+    	_places.get(index).SetPosition(5 + index / 5 * _placeSizeWidth + 5, index % 5 * _placeSizeHeight + 15, PictureWidth, PictureHeight);	
+	}
 }

@@ -33,6 +33,24 @@ public class FuelTruck extends Truck
 		this.typeLiquid = typeLiquid;
 		this.countLiquid = countLiquid;
 	}
+	public FuelTruck(String info)
+    {
+    	super(info);
+
+    	String[] strs = info.split(";");
+        if (strs.length == 9)
+        {
+            maxSpeed = Integer.parseInt(strs[0]);
+            weight = Float.parseFloat(strs[1]);
+            bodyColor = new Color(Integer.parseInt(strs[2]));
+            drivesColor = new Color(Integer.parseInt(strs[3]));
+            flasher = Boolean.getBoolean(strs[4]);
+            frameColor = new Color(Integer.parseInt(strs[5]));
+            typeLiquid = strs[6];
+            countLiquid = Float.parseFloat(strs[7]);
+            tankColor = new Color(Integer.parseInt(strs[8]));
+        }
+    }
 	//		
 	@Override
 	public void DrawTransport(Graphics g)
@@ -67,4 +85,12 @@ public class FuelTruck extends Truck
 	public void setTankColor(Color tankColor) {
 		this.tankColor = tankColor;
 	}
+	@Override
+    public String ToString()
+    {
+        return super.ToString() + ";"
+                + typeLiquid + ";"
+                + countLiquid + ";"
+                + tankColor.getRGB();
+    }
 }

@@ -27,6 +27,18 @@ public class Truck extends Vehicle {
         this.drivesColor = drivesColor;
         this.frameColor = frameColor;
     }
+	public Truck(String info) {
+		String[] strs = info.split(";");
+        if (strs.length == 6)
+        {
+            maxSpeed = Integer.parseInt(strs[0]);
+            weight = Float.parseFloat(strs[1]);
+            bodyColor = new Color(Integer.parseInt(strs[2]));
+            drivesColor = new Color(Integer.parseInt(strs[3]));
+            flasher = Boolean.parseBoolean(strs[4]);
+            frameColor = new Color(Integer.parseInt(strs[5]));
+        }
+	}
 	//	
     @Override
     public void DrawTransport(Graphics g)
@@ -110,5 +122,14 @@ public class Truck extends Vehicle {
 	}
 	public void setTypeWheel(IWheel typeWheel) {
 		this.typeWheel = typeWheel;
+	}
+	@Override
+	public String ToString() {
+		return maxSpeed + ";"
+                + weight + ";"
+                + bodyColor.getRGB() + ";"
+                + drivesColor.getRGB() + ";"
+                + flasher +";"
+                + frameColor.getRGB() ;
 	}
 }

@@ -6,6 +6,7 @@ import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import Transport.FuelTruck;
@@ -17,11 +18,18 @@ import myEnum.countWheels;
 import parking.*;
 import wheel.IWheel;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 import java.awt.event.ActionEvent;
 import javax.swing.JList;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import javax.swing.event.ListSelectionEvent;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 
 public class FormGarages {
 	class _delegate extends TransportDelegate {
@@ -191,10 +199,99 @@ public class FormGarages {
 			public void actionPerformed(ActionEvent e) {
 				FormConfigTruck conf = new FormConfigTruck(new _delegate());
 				conf.frame.setVisible(true);
+				Draw();
 			}
 		});
 		btnAddTransport.setBounds(768, 229, 110, 40);
 		frame.getContentPane().add(btnAddTransport);
+		
+		JMenuBar menuBar = new JMenuBar();
+		frame.setJMenuBar(menuBar);
+		
+		JMenu mnAll = new JMenu("All");
+		menuBar.add(mnAll);
+		
+		JMenuItem mntmSaveAll = new JMenuItem("Save");
+		mntmSaveAll.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser filechooser = new JFileChooser();
+				FileNameExtensionFilter filter = new FileNameExtensionFilter("txt", "txt");
+				filechooser.setFileFilter(filter);
+				int ret = filechooser.showDialog(null, "Save");                
+				if (ret == JFileChooser.APPROVE_OPTION) {
+				    File file = filechooser.getSelectedFile();
+				    try {
+						garages.SaveData(file.getAbsolutePath());
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
+		});
+		mnAll.add(mntmSaveAll);
+		
+		JMenuItem mntmLoadAll = new JMenuItem("Load");
+		mntmLoadAll.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser filechooser = new JFileChooser();
+				FileNameExtensionFilter filter = new FileNameExtensionFilter("txt", "txt");
+				filechooser.setFileFilter(filter);
+				int ret = filechooser.showDialog(null, "Load");                
+				if (ret == JFileChooser.APPROVE_OPTION) {
+				    File file = filechooser.getSelectedFile();
+				    try {
+						garages.LoadData(file.getAbsolutePath());
+						Draw();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
+		});
+		mnAll.add(mntmLoadAll);
+		
+		JMenu mnLevel = new JMenu("Level");
+		menuBar.add(mnLevel);
+		
+		JMenuItem mntmSaveLevel = new JMenuItem("Save");
+		mntmSaveLevel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser filechooser = new JFileChooser();
+				FileNameExtensionFilter filter = new FileNameExtensionFilter("lvl", "lvl");
+				filechooser.setFileFilter(filter);
+				int ret = filechooser.showDialog(null, "Save");                
+				if (ret == JFileChooser.APPROVE_OPTION) {
+				    File file = filechooser.getSelectedFile();
+				    try {
+						garages.SaveLevel(file.getAbsolutePath(), selectLevel);
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				    Draw();
+				}
+			}
+		});
+		mnLevel.add(mntmSaveLevel);
+		
+		JMenuItem mntmLoadLevel = new JMenuItem("Load");
+		mntmLoadLevel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser filechooser = new JFileChooser();
+				FileNameExtensionFilter filter = new FileNameExtensionFilter("lvl", "lvl");
+				filechooser.setFileFilter(filter);
+				int ret = filechooser.showDialog(null, "Load");                
+				if (ret == JFileChooser.APPROVE_OPTION) {
+				    File file = filechooser.getSelectedFile();
+				    try {
+						garages.LoadLevel(file.getAbsolutePath());
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				    Draw();
+				}
+			}
+		});
+		mnLevel.add(mntmLoadLevel);
 		garages = new multiLevelGarages(countLevel, pbGarages.getWidth(), pbGarages.getHeight());
 		Draw();
 		
