@@ -118,11 +118,6 @@ public class FormConfigTruck {
 		panel_1.add(lblFuelTruck);
 		
 		JPanel panel_2 = new JPanel();
-		panel_2.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent e) {
-			}
-		});
 		panel_2.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel_2.setBounds(270, 11, 116, 209);
 		frame.getContentPane().add(panel_2);
