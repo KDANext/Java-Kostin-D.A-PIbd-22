@@ -379,7 +379,7 @@ public class FormConfigTruck {
 				tempWheel = null;
 			}
 		});
-		lblBasicWheel.setIcon(new ImageIcon("S:\\GitHub\\Java-Kostin-D.A-PIbd-22\\TruckApp\\res\\basicWheel.png"));
+		lblBasicWheel.setIcon(new ImageIcon("res\\basicWheel.png"));
 		lblBasicWheel.setBounds(10, 40, 27, 44);
 		panel.add(lblBasicWheel);
 		
@@ -394,7 +394,7 @@ public class FormConfigTruck {
 				tempWheel = null;
 			}
 		});
-		label.setIcon(new ImageIcon("S:\\GitHub\\Java-Kostin-D.A-PIbd-22\\TruckApp\\res\\goodWheel.png"));
+		label.setIcon(new ImageIcon("res\\goodWheel.png"));
 		label.setBounds(37, 40, 27, 44);
 		panel.add(label);
 		
@@ -409,7 +409,7 @@ public class FormConfigTruck {
 				tempWheel = null;
 			}
 		});
-		label_1.setIcon(new ImageIcon("S:\\GitHub\\Java-Kostin-D.A-PIbd-22\\TruckApp\\res\\superWheel.png"));
+		label_1.setIcon(new ImageIcon("res\\superWheel.png"));
 		label_1.setBounds(64, 40, 27, 44);
 		panel.add(label_1);
 	}
