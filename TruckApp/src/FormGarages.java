@@ -174,7 +174,7 @@ public class FormGarages {
 
 		DefaultListModel listLevelModel = new DefaultListModel();
 		for (int i = 0; i < countLevel; i++) {
-			listLevelModel.addElement("Óðîâåíü "+(i+1));
+			listLevelModel.addElement("level "+(i+1));
 		}
 		JList listLevels = new JList(listLevelModel);
 		listLevels.addListSelectionListener(new ListSelectionListener() {
