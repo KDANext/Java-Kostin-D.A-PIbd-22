@@ -8,6 +8,9 @@ import java.util.Map;
 import java.util.Set;
 
 import Transport.*;
+import exception.GaragesNotFoundException;
+import exception.GaragesOccupiedPlaceException;
+import exception.GaragesOverflowException;
 import wheel.*;
 
 public class garages<T extends Object&ITransport,W extends Object&IWheel >  {
@@ -26,9 +29,9 @@ public class garages<T extends Object&ITransport,W extends Object&IWheel >  {
 		PictureWidth=pictureWidth;
 		PictureHeight=pictureHeight;
 	}			
-	public int addTransport(T car,W wheel) {
+	public int addTransport(T car,W wheel) throws GaragesOverflowException {
 		if(_places.size()==_maxCount) {
-			return -1;
+			throw new GaragesOverflowException();
 		}
 		for (int i = 0; i < _maxCount; i++) {
 			if(checkFreePlace(i)) {
@@ -40,14 +43,14 @@ public class garages<T extends Object&ITransport,W extends Object&IWheel >  {
 		}
 		return -1;
 	}
-	public ITransport takeTransport(int index) {
+	public ITransport takeTransport(int index) throws GaragesNotFoundException {
 		if(!checkFreePlace(index)) {
 			T car = _places.get(index);
 			_places.remove(index);
 			_wheels.remove(index);
 			return car;
 		}
-		return null;
+		throw new GaragesNotFoundException(index);
 	}
 	public boolean checkFreePlace(int index) {
 		return !_places.containsKey(index);
@@ -72,14 +75,25 @@ public class garages<T extends Object&ITransport,W extends Object&IWheel >  {
 		}		
 	}
 	public T getTransportAtIndex(int index) {
-		return _places.get(index);	
+		if (_places.containsKey(index)) {
+			return _places.get(index);
+		}
+		return null;
 	}
 	public int getSize() {
 		return _places.size();
 	}
-	public void setTransport(int index, T transport) {
-		_places.put(index, transport);
-		_wheels.put(index, (W) transport.getTypeWheel());
-    	_places.get(index).SetPosition(5 + index / 5 * _placeSizeWidth + 5, index % 5 * _placeSizeHeight + 15, PictureWidth, PictureHeight);	
+	public void setTransport(int index, T transport) throws GaragesOccupiedPlaceException {
+		if(checkFreePlace(index)) {
+			_places.put(index, transport);
+			_wheels.put(index, (W) transport.getTypeWheel());
+			_places.get(index).SetPosition(5 + index / 5 * _placeSizeWidth + 5, index % 5 * _placeSizeHeight + 15, PictureWidth, PictureHeight);
+			return;
+		}
+		else
+        {
+			throw new GaragesOccupiedPlaceException(index);
+        }
+
 	}
 }

@@ -10,6 +10,7 @@ import java.util.List;
 import Transport.FuelTruck;
 import Transport.ITransport;
 import Transport.Truck;
+import exception.GaragesNotFoundException;
 import myEnum.countWheels;
 import wheel.IWheel;
 import wheel.basicTruckWheel;
@@ -36,7 +37,7 @@ public class multiLevelGarages {
 		return null;
 	}
 
-	public ITransport getTruck(int level, int index) {
+	public ITransport getTruck(int level, int index) throws GaragesNotFoundException {
 		if (level < 0 || level >= garagesStages.size())
 			return null;
 		if (index < 0 || index > countPlaces)
@@ -58,16 +59,17 @@ public class multiLevelGarages {
 		for (garages<ITransport, IWheel> level : garagesStages) {
 			WriteToFile("Level" + "\n", fw);
 			for (int i = 0; i < countPlaces; i++) {
-				ITransport transport = level.getTransportAtIndex(i);
+				ITransport transport = null;
+				transport = level.getTransportAtIndex(i);
 				if (transport != null) {
-					if (transport.getClass().getName() == "Transport.Truck") {
-						WriteToFile(i + ":Truck:", fw);
+						if (transport.getClass().getName() == "Transport.Truck") {
+							WriteToFile(i + ":Truck:", fw);
+						}
+						if (transport.getClass().getName() == "Transport.FuelTruck") {
+							WriteToFile(i + ":FuelTruck:", fw);
+						}
+						WriteToFile(transport.ToString() + "\n", fw);
 					}
-					if (transport.getClass().getName() == "Transport.FuelTruck") {
-						WriteToFile(i + ":FuelTruck:", fw);
-					}
-					WriteToFile(transport.ToString() + "\n", fw);
-				}
 			}
 		}
 		fw.close();
@@ -102,7 +104,7 @@ public class multiLevelGarages {
 		}
 	}
 
-	public boolean LoadData(String filename) throws IOException {
+	public boolean LoadData(String filename) throws Exception {
 		FileReader fr = new FileReader(filename);
 		String bufferTextFromFile = "";
 		int counter = -1;
@@ -120,7 +122,7 @@ public class multiLevelGarages {
 			garagesStages = new ArrayList<garages<ITransport, IWheel>>(count);
 			bufferTextFromFile = "";
 		} else {
-			return false;
+			throw new Exception("Invalid file format");
 		}
 
 		while ((c = fr.read()) != -1) {
@@ -141,8 +143,7 @@ public class multiLevelGarages {
 						transport = new FuelTruck(bufferTextFromFile.split(":")[2]);
 					}
 					transport.setTypeWheel(new basicTruckWheel(countWheels.basic, Color.white));
-					garagesStages.get(counter).setTransport(Integer.parseInt(bufferTextFromFile.split(":")[0]),
-							transport);
+					garagesStages.get(counter).setTransport(Integer.parseInt(bufferTextFromFile.split(":")[0]),transport);
 				}
 
 				bufferTextFromFile = "";

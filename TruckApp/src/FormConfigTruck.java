@@ -12,6 +12,7 @@ import Transport.FuelTruck;
 import Transport.ITransport;
 import Transport.Truck;
 import delegate.TransportDelegate;
+import exception.GaragesOverflowException;
 import myEnum.countWheels;
 import wheel.IWheel;
 import wheel.basicTruckWheel;
@@ -27,6 +28,7 @@ import javax.swing.UIManager;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.logging.Logger;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -39,7 +41,6 @@ public class FormConfigTruck {
 	private My_JPanel pbTransport;
 	TransportDelegate add;
 	FormConfigTruck window;
-
 	/**
 	 * Launch the application.
 	 */
@@ -47,7 +48,6 @@ public class FormConfigTruck {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					
 					FormConfigTruck window = new FormConfigTruck(null);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
@@ -68,25 +68,24 @@ public class FormConfigTruck {
 		add = delegate;
 		initialize();
 	}
-
 	private void initialize() {
 
 		frame = new JFrame();
 		frame.setBounds(100, 100, 412, 376);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
+
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel_1.setBounds(10, 11, 120, 140);
 		frame.getContentPane().add(panel_1);
 		panel_1.setLayout(null);
-		
+
 		JLabel lblNewLabel = new JLabel("Type truck:");
 		lblNewLabel.setBounds(10, 11, 100, 17);
 		panel_1.add(lblNewLabel);
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		
+
 		JLabel lblTruck = new JLabel("Truck");
 		lblTruck.addMouseListener(new MouseAdapter() {
 			@Override
@@ -101,7 +100,7 @@ public class FormConfigTruck {
 		lblTruck.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblTruck.setBounds(10, 39, 100, 40);
 		panel_1.add(lblTruck);
-		
+
 		JLabel lblFuelTruck = new JLabel("Fuel truck");
 		lblFuelTruck.addMouseListener(new MouseAdapter() {
 			@Override
@@ -116,30 +115,25 @@ public class FormConfigTruck {
 		lblFuelTruck.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblFuelTruck.setBounds(10, 90, 100, 40);
 		panel_1.add(lblFuelTruck);
-		
+
 		JPanel panel_2 = new JPanel();
-		panel_2.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent e) {
-			}
-		});
 		panel_2.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel_2.setBounds(270, 11, 116, 209);
 		frame.getContentPane().add(panel_2);
 		panel_2.setLayout(null);
-		
+
 		JLabel labelColor = new JLabel("Color:");
 		labelColor.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		labelColor.setBounds(10, 11, 100, 17);
 		panel_2.add(labelColor);
-		
+
 		JLabel lcWhite = new JLabel("");
 		lcWhite.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				tempColor=Color.white;
 			}
-			
+
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				tempColor=null;
@@ -222,7 +216,7 @@ public class FormConfigTruck {
 				tempColor=null;
 			}
 		});
-		
+
 		lcWhite.setBounds(6, 39, 49, 20);
 		lcBlack.setBounds(55, 40, 49, 20);
 		lcGreen.setBounds(55, 71, 49, 20);
@@ -231,7 +225,7 @@ public class FormConfigTruck {
 		lcBlue.setBounds(6, 102, 49, 20);
 		lcRed.setBounds(55, 135, 49, 20);
 		lcCyan.setBounds(6, 134, 49, 20);
-		
+
 		lcWhite.setBackground(Color.WHITE);
 		lcBlack.setBackground(Color.BLACK);
 		lcGreen.setBackground(Color.GREEN);
@@ -240,7 +234,7 @@ public class FormConfigTruck {
 		lcBlue.setBackground(Color.BLUE);
 		lcRed.setBackground(Color.RED);
 		lcCyan.setBackground(Color.CYAN);
-		
+
 		lcWhite.setOpaque(true);
 		lcBlack.setOpaque(true);
 		lcGreen.setOpaque(true);
@@ -249,7 +243,7 @@ public class FormConfigTruck {
 		lcBlue.setOpaque(true);
 		lcRed.setOpaque(true);
 		lcCyan.setOpaque(true);
-		
+
 		panel_2.add(lcWhite);
 		panel_2.add(lcBlack);
 		panel_2.add(lcGreen);
@@ -258,7 +252,7 @@ public class FormConfigTruck {
 		panel_2.add(lcBlue);
 		panel_2.add(lcRed);
 		panel_2.add(lcCyan);
-		
+
 		JPanel panel_3 = new JPanel();
 		panel_3.addMouseListener(new MouseAdapter() {
 			@Override
@@ -281,12 +275,12 @@ public class FormConfigTruck {
 		panel_3.setBounds(140, 11, 120, 260);
 		panel_3.setTransferHandler(new TransferHandler("type_transport"));
 		frame.getContentPane().add(panel_3);
-		
+
 		pbTransport = new My_JPanel();
 		pbTransport.setBorder(new LineBorder(new Color(0, 0, 0)));
 		pbTransport.setBounds(10, 11, 100, 60);
 		panel_3.add(pbTransport);
-		
+
 		JLabel mainColor = new JLabel("Main color");
 		mainColor.addMouseListener(new MouseAdapter() {
 			@Override
@@ -301,7 +295,7 @@ public class FormConfigTruck {
 		panel_3.add(mainColor);
 		mainColor.setTransferHandler(new TransferHandler("123"));
 		mainColor.setDropTarget(null);
-		
+
 		JLabel secondColor = new JLabel("Second color");
 		secondColor.addMouseListener(new MouseAdapter() {
 			@Override
@@ -319,7 +313,7 @@ public class FormConfigTruck {
 		secondColor.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		secondColor.setBounds(10, 143, 100, 50);
 		panel_3.add(secondColor);
-		
+
 		JLabel typeWheel = new JLabel("Type wheel");
 		typeWheel.addMouseListener(new MouseAdapter() {
 			@Override
@@ -335,7 +329,7 @@ public class FormConfigTruck {
 		typeWheel.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		typeWheel.setBounds(10, 204, 100, 50);
 		panel_3.add(typeWheel);
-		
+
 		JButton btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -344,7 +338,7 @@ public class FormConfigTruck {
 		});
 		btnCancel.setBounds(10, 197, 120, 23);
 		frame.getContentPane().add(btnCancel);
-		
+
 		JButton btnOk = new JButton("Add transport");
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -356,18 +350,18 @@ public class FormConfigTruck {
 		});
 		btnOk.setBounds(10, 163, 120, 23);
 		frame.getContentPane().add(btnOk);
-		
+
 		JPanel panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel.setBounds(10, 231, 98, 95);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
-		
+
 		JLabel lblNewLabel_1 = new JLabel("Type wheel:");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblNewLabel_1.setBounds(10, 11, 120, 30);
 		panel.add(lblNewLabel_1);
-		
+
 		JLabel lblBasicWheel = new JLabel("");
 		lblBasicWheel.addMouseListener(new MouseAdapter() {
 			@Override
@@ -379,10 +373,10 @@ public class FormConfigTruck {
 				tempWheel = null;
 			}
 		});
-		lblBasicWheel.setIcon(new ImageIcon("S:\\GitHub\\Java-Kostin-D.A-PIbd-22\\TruckApp\\res\\basicWheel.png"));
+		lblBasicWheel.setIcon(new ImageIcon("res\\basicWheel.png"));
 		lblBasicWheel.setBounds(10, 40, 27, 44);
 		panel.add(lblBasicWheel);
-		
+
 		JLabel label = new JLabel("");
 		label.addMouseListener(new MouseAdapter() {
 			@Override
@@ -394,10 +388,10 @@ public class FormConfigTruck {
 				tempWheel = null;
 			}
 		});
-		label.setIcon(new ImageIcon("S:\\GitHub\\Java-Kostin-D.A-PIbd-22\\TruckApp\\res\\goodWheel.png"));
+		label.setIcon(new ImageIcon("res\\goodWheel.png"));
 		label.setBounds(37, 40, 27, 44);
 		panel.add(label);
-		
+
 		JLabel label_1 = new JLabel("");
 		label_1.addMouseListener(new MouseAdapter() {
 			@Override
@@ -409,7 +403,7 @@ public class FormConfigTruck {
 				tempWheel = null;
 			}
 		});
-		label_1.setIcon(new ImageIcon("S:\\GitHub\\Java-Kostin-D.A-PIbd-22\\TruckApp\\res\\superWheel.png"));
+		label_1.setIcon(new ImageIcon("res\\superWheel.png"));
 		label_1.setBounds(64, 40, 27, 44);
 		panel.add(label_1);
 	}
