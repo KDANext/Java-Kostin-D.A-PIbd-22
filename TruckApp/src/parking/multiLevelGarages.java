@@ -11,6 +11,7 @@ import Transport.FuelTruck;
 import Transport.ITransport;
 import Transport.Truck;
 import exception.GaragesNotFoundException;
+import exception.GaragesOccupiedPlaceException;
 import myEnum.countWheels;
 import wheel.IWheel;
 import wheel.basicTruckWheel;
@@ -45,12 +46,8 @@ public class multiLevelGarages {
 		return getGaragesStages(level).getTransportAtIndex(index);
 	}
 
-	private void WriteToFile(String text, FileWriter fw) {
-		try {
+	private void WriteToFile(String text, FileWriter fw) throws IOException {
 			fw.write(text);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	public boolean SaveData(String filename) throws IOException {
@@ -76,8 +73,7 @@ public class multiLevelGarages {
 		return true;
 	}
 
-	public boolean SaveLevel(String filename, int lvl) throws IOException {
-		try {
+	public boolean SaveLevel(String filename, int lvl) throws IOException,Exception {
 			if (lvl < garagesStages.size() && lvl > 0) {
 				return false;
 			}
@@ -98,10 +94,6 @@ public class multiLevelGarages {
 			}
 			fw.close();
 			return true;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
 	}
 
 	public boolean LoadData(String filename) throws Exception {
@@ -154,8 +146,7 @@ public class multiLevelGarages {
 		return true;
 	}
 
-	public boolean LoadLevel(String filename) throws IOException {
-		try {
+	public boolean LoadLevel(String filename) throws IOException, GaragesOccupiedPlaceException {
 			FileReader fr = new FileReader(filename);
 			String bufferTextFromFile = "";
 			int lvl = 0;
@@ -193,8 +184,7 @@ public class multiLevelGarages {
 							transport = new FuelTruck(bufferTextFromFile.split(":")[2]);
 						}
 						transport.setTypeWheel(new basicTruckWheel(countWheels.basic, Color.white));
-						garagesStages.get(lvl).setTransport(Integer.parseInt(bufferTextFromFile.split(":")[0]),
-								transport);
+						garagesStages.get(lvl).setTransport(Integer.parseInt(bufferTextFromFile.split(":")[0]),transport);
 					}
 
 					bufferTextFromFile = "";
@@ -202,10 +192,6 @@ public class multiLevelGarages {
 					bufferTextFromFile += (char) c;
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
 		return true; 
 	}
 

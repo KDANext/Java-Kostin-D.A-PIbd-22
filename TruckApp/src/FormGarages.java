@@ -324,18 +324,21 @@ public class FormGarages {
 		JMenuItem mntmSaveLevel = new JMenuItem("Save");
 		mntmSaveLevel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JFileChooser filechooser = new JFileChooser();
-				FileNameExtensionFilter filter = new FileNameExtensionFilter("lvl", "lvl");
-				filechooser.setFileFilter(filter);
-				int ret = filechooser.showDialog(null, "Save");                
-				if (ret == JFileChooser.APPROVE_OPTION) {
-					File file = filechooser.getSelectedFile();
-					try {
+				try {
+					JFileChooser filechooser = new JFileChooser();
+					FileNameExtensionFilter filter = new FileNameExtensionFilter("lvl", "lvl");
+					filechooser.setFileFilter(filter);
+					int ret = filechooser.showDialog(null, "Save");                
+					if (ret == JFileChooser.APPROVE_OPTION) {
+						File file = filechooser.getSelectedFile();
 						garages.SaveLevel(file.getAbsolutePath(), selectLevel);
-					} catch (IOException e1) {
-						e1.printStackTrace();
+						loggerInfo.info("Saving level was successful");
+						JOptionPane.showMessageDialog(frame, "Saving level was successful","Info", JOptionPane.INFORMATION_MESSAGE);
+						Draw();
 					}
-					Draw();
+				} catch (Exception ex) {
+					loggerError.warning("Unknown error while saving level");
+					JOptionPane.showMessageDialog(frame, "Unknown error while saving level","Exception", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -352,12 +355,15 @@ public class FormGarages {
 					if (ret == JFileChooser.APPROVE_OPTION) {
 						File file = filechooser.getSelectedFile();
 						garages.LoadLevel(file.getAbsolutePath());
-
 						Draw();
-					}				
-				} catch (IOException ex) {
-					// TODO Auto-generated catch block
-					ex.printStackTrace();
+						loggerInfo.info("Load file!");
+					}		
+				}catch (GaragesOccupiedPlaceException ex) {
+					loggerError.warning("Garages occupied place");
+					JOptionPane.showMessageDialog(frame, "\"Garages occupied place","Exception", JOptionPane.ERROR_MESSAGE);
+				}catch (Exception ex) {
+					loggerError.warning("Unknown error while load");
+					JOptionPane.showMessageDialog(frame, "Unknown error while load","Exception", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
